@@ -6,10 +6,7 @@
   <title>HealthSphere - Menstrual Wellness</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-
-
   <header class="top-bar">
     <div class="logo">
       <span class="logo-dot"></span>
@@ -17,101 +14,142 @@
     </div>
 
     <nav class="nav">
-      <button class="nav-link active" data-section="dashboard">Dashboard</button>
-      <button class="nav-link" data-section="tracker">Cycle Tracker</button>
-      <button class="nav-link" data-section="symptoms">Symptoms & Mood</button>
-      <button class="nav-link" data-section="tips">Tips & Diet</button>
-      <button class="nav-link" data-section="products">Products</button>
-      <button class="nav-link" data-section="myths">Myths V/S Facts</button>
-      <button class="nav-link" data-section="faq">FAQ</button>
+      <button class="nav-link active" data-section="dashboard" id="navDashboard">Dashboard</button>
+      <button class="nav-link" data-section="tracker" id="navTracker">Cycle Tracker</button>
+      <button class="nav-link" data-section="symptoms" id="navSymptoms">Symptoms & Mood</button>
+      <button class="nav-link" data-section="tips" id="navTips">Tips & Diet</button>
+      <button class="nav-link" data-section="products" id="navProducts">Products</button>
+      <button class="nav-link" data-section="myths" id="navMyths">Myths & Facts</button>
+      <button class="nav-link" data-section="faq" id="navFaq">FAQ</button>
     </nav>
 
-    <button id="sosBtn" class="sos-btn">SOS</button>
+    <div class="top-right">
+      <button id="themeToggle" class="chip-btn" title="Toggle theme">🌙</button>
+      <button id="langToggle" class="chip-btn" title="Toggle language">EN</button>
+      <button id="sosBtn" class="sos-btn">SOS</button>
+    </div>
   </header>
 
   <main class="container">
-
-
+    <!-- D A S H B O A R D -->
     <section id="dashboard" class="section active">
-
-      <h1 class="soft-type" data-text="Dashboard"></h1>
-      <p class="subtitle soft-type" data-text="Quick overview of your cycle, health & recent activity."></p>
+      <h1 id="dashTitle" class="soft-type">Dashboard</h1>
+      <p class="subtitle" id="dashSubtitle">
+        Quick overview of your cycle, health & recent activity.
+      </p>
 
       <div class="dashboard-container">
 
         <div class="dashboard-block">
           <div class="dashboard-title"><span>🩷</span> Cycle Summary</div>
-          <div id="cycleSummary" class="dashboard-content"><p>Loading...</p></div>
+          <div id="cycleSummary" class="dashboard-content">
+            <p>Add your cycle in Tracker to see summary here.</p>
+          </div>
         </div>
 
         <div class="dashboard-block">
           <div class="dashboard-title"><span>💡</span> Today’s Suggestions</div>
-          <div class="dashboard-content"><ul id="todaySuggestion"></ul></div>
+          <div class="dashboard-content">
+            <p id="dailyQuote" class="small"></p>
+            <ul id="todaySuggestion"></ul>
+          </div>
         </div>
 
         <div class="dashboard-block">
           <div class="dashboard-title"><span>💬</span> Recent Mood & Symptoms</div>
-          <div class="dashboard-content"><ul id="recentLogs"></ul></div>
+          <div class="dashboard-content">
+            <ul id="recentLogs"></ul>
+          </div>
         </div>
 
         <div class="dashboard-block dashboard-highlight">
           <div class="dashboard-title"><span>📅</span> Cycle Status</div>
-          <div class="dashboard-content"><p id="cycleStatusText">Your cycle status will appear here.</p></div>
+          <div class="dashboard-content">
+            <p id="cycleStatusText">Your cycle status will appear here.</p>
+
+            <!-- Mini calendar -->
+            <div class="mini-calendar">
+              <label for="calendarMonth" class="small">Cycle calendar preview</label>
+              <input type="month" id="calendarMonth" />
+              <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+
+            <button id="printReportBtn" class="primary-btn small-btn">
+              Print / Save Report
+            </button>
+          </div>
         </div>
 
       </div>
     </section>
 
-
+    <!-- C Y C L E   T R A C K E R -->
     <section id="tracker" class="section">
-
-      <h1 class="soft-type" data-text="Tracker"></h1>
-      <p class="subtitle soft-type" data-text="Track your cycle & symptoms easily."></p>
+      <h1 id="trackerTitle" class="soft-type">Cycle Tracker</h1>
+      <p class="subtitle" id="trackerSubtitle">
+        Track your cycle & symptoms easily.
+      </p>
 
       <div class="card">
         <form id="trackerForm" class="form">
-
           <div class="form-group">
             <label for="lastPeriod">Last period started on</label>
             <input type="date" id="lastPeriod" required />
           </div>
 
           <div class="form-group">
-            <label for="cycleLength">Average cycle length (in days)</label>
-            <input type="number" id="cycleLength" min="20" max="45" placeholder="e.g. 28" required />
+            <label for="cycleLength">
+              Average cycle length (in days)
+            </label>
+            <input
+              type="number"
+              id="cycleLength"
+              min="20"
+              max="45"
+              placeholder="e.g. 28"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="flowIntensity">Flow intensity</label>
+            <select id="flowIntensity">
+              <option value="light">Light</option>
+              <option value="medium" selected>Medium</option>
+              <option value="heavy">Heavy</option>
+            </select>
           </div>
 
           <button type="submit" class="primary-btn">Save & Calculate</button>
-
         </form>
       </div>
 
       <div class="grid">
         <div class="card">
           <h2>Predictions</h2>
-          <div id="trackerResult"><p>Fill the form to see predictions.</p></div>
+          <div id="trackerResult">
+            <p>Fill the form to see predictions.</p>
+          </div>
         </div>
 
         <div class="card">
           <h2>Quick Info</h2>
           <ul class="simple-list">
-            <li>Cycle starts on Day 1 of period.</li>
-            <li>Ovulation usually ~14 days before next period.</li>
-            <li>These are estimates; each body is different.</li>
+            <li>Cycle length is counted from Day 1 of one period to the day before the next.</li>
+            <li>Ovulation often happens around 14 days before the next period (this can vary).</li>
+            <li>This tool is an estimate, not a medical diagnosis.</li>
           </ul>
         </div>
       </div>
     </section>
 
-
+    <!-- S Y M P T O M S   &   M O O D -->
     <section id="symptoms" class="section">
-
-      <h1 class="soft-type" data-text="Symptoms & Mood"></h1>
-      <p class="subtitle soft-type" data-text="Log how you feel today."></p>
+      <h1 id="symTitle" class="soft-type">Symptoms & Mood</h1>
+      <p class="subtitle" id="symSubtitle">Log how you feel today.</p>
 
       <div class="card">
         <form id="logForm" class="form">
-
           <div class="form-group">
             <label for="logDate">Date</label>
             <input type="date" id="logDate" />
@@ -120,315 +158,387 @@
           <div class="form-group">
             <label>Mood</label>
             <div class="chip-group">
-              <label><input type="radio" name="mood" value="Happy"> Happy 😊</label>
-              <label><input type="radio" name="mood" value="Neutral"> Neutral 😐</label>
-              <label><input type="radio" name="mood" value="Sad"> Sad 😔</label>
-              <label><input type="radio" name="mood" value="Stressed"> Stressed 😣</label>
-              <label><input type="radio" name="mood" value="Tired"> Tired 😴</label>
+              <label><input type="radio" name="mood" value="Happy" /> Happy 😊</label>
+              <label><input type="radio" name="mood" value="Neutral" /> Neutral 😐</label>
+              <label><input type="radio" name="mood" value="Sad" /> Sad 😔</label>
+              <label><input type="radio" name="mood" value="Stressed" /> Stressed 😣</label>
+              <label><input type="radio" name="mood" value="Tired" /> Tired 😴</label>
             </div>
           </div>
 
           <div class="form-group">
             <label>Symptoms</label>
             <div class="chip-group">
-              <label><input type="checkbox" value="Cramps"> Cramps</label>
-              <label><input type="checkbox" value="Headache"> Headache</label>
-              <label><input type="checkbox" value="Back pain"> Back pain</label>
-              <label><input type="checkbox" value="Bloating"> Bloating</label>
-              <label><input type="checkbox" value="Acne"> Acne</label>
-              <label><input type="checkbox" value="Mood swings"> Mood swings</label>
+              <label><input type="checkbox" value="Cramps" /> Cramps</label>
+              <label><input type="checkbox" value="Headache" /> Headache</label>
+              <label><input type="checkbox" value="Back pain" /> Back pain</label>
+              <label><input type="checkbox" value="Bloating" /> Bloating</label>
+              <label><input type="checkbox" value="Acne" /> Acne</label>
+              <label><input type="checkbox" value="Mood swings" /> Mood swings</label>
             </div>
           </div>
 
           <button type="submit" class="primary-btn">Save Log</button>
-
         </form>
       </div>
 
-      <div class="card">
-        <h2>Recent Logs</h2>
-        <ul id="logsList" class="simple-list"></ul>
-      </div>
-
-    </section>
-
-
-    <section id="tips" class="section">
-
-      <h1 class="soft-type" data-text="Tips & Diet"></h1>
-      <p class="subtitle soft-type" data-text="Personalized health guidance for your cycle."></p>
-
       <div class="grid">
+        <div class="card">
+          <h2>Recent Logs</h2>
+          <ul id="logsList" class="simple-list"></ul>
+        </div>
 
         <div class="card">
-          <h2>Before Period (PMS)</h2>
+          <h2>Simple Insights</h2>
+          <p id="symptomInsight" class="small">
+            Log a few days of mood & symptoms to see patterns here.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- T I P S   &   D I E T -->
+    <section id="tips" class="section">
+      <h1 id="tipsTitle" class="soft-type">Tips & Diet</h1>
+      <p class="subtitle" id="tipsSubtitle">
+        Personalized health guidance for your cycle.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Before Period (PMS phase)</h2>
           <ul class="simple-list">
-            <li>Eat fruits & vegetables</li>
-            <li>Avoid salty or junk food</li>
-            <li>Get enough sleep</li>
-            <li>Light exercise helps mood</li>
+            <li>Eat more fruits, veggies, and whole grains.</li>
+            <li>Reduce very salty and junk food to avoid bloating.</li>
+            <li>Sleep 7–8 hours regularly.</li>
+            <li>Light exercise or walking can help mood.</li>
           </ul>
         </div>
 
         <div class="card">
           <h2>During Period</h2>
           <ul class="simple-list">
-            <li>Use a heating pad</li>
-            <li>Stay hydrated</li>
-            <li>Change pads/cups regularly</li>
+            <li>Use a heating pad or warm water bag for cramps.</li>
+            <li>Stay hydrated and avoid skipping meals.</li>
+            <li>Change pads/cups/ tampons regularly for hygiene.</li>
+            <li>Choose comfortable clothing.</li>
           </ul>
         </div>
 
         <div class="card">
           <h2>After Period</h2>
           <ul class="simple-list">
-            <li>Eat iron-rich foods</li>
-            <li>Include protein</li>
-            <li>Resume regular workouts</li>
+            <li>Iron-rich foods: spinach, lentils, beans.</li>
+            <li>Include protein: dals, paneer, eggs, etc.</li>
+            <li>Slowly return to regular exercise if you paused.</li>
           </ul>
         </div>
 
         <div class="card">
-          <h2>PCOS / PCOD Tips</h2>
+          <h2>PCOS / PCOD Friendly Tips</h2>
           <ul class="simple-list">
-            <li>Walk daily</li>
-            <li>Reduce sugar</li>
-            <li>Maintain proper sleep routine</li>
+            <li>Regular movement (even 20–30 mins daily walk).</li>
+            <li>Limit very sugary and processed foods.</li>
+            <li>Keep a routine sleep schedule.</li>
+            <li>Consult a doctor for personalized advice.</li>
           </ul>
         </div>
-
       </div>
     </section>
 
-
+    <!-- P R O D U C T S -->
     <section id="products" class="section">
-
-      <h1 class="soft-type" data-text="Products"></h1>
-      <p class="subtitle soft-type" data-text="Best period care essentials curated for you."></p>
+      <h1 id="prodTitle" class="soft-type">Products</h1>
+      <p class="subtitle" id="prodSubtitle">
+        Best period care essentials curated for you.
+      </p>
 
       <div class="grid product-grid">
-
         <div class="card product-card">
           <h2>Sanitary Pads</h2>
-          <p>Common & beginner-friendly.</p>
+          <p>Common, easy to use, available everywhere.</p>
           <h3>Pros</h3>
           <ul class="simple-list">
+            <li>Beginner friendly</li>
             <li>No insertion needed</li>
-            <li>Easily available</li>
+            <li>Variety of sizes & absorbency</li>
           </ul>
           <h3>Cons</h3>
           <ul class="simple-list">
             <li>Can feel bulky</li>
-            <li>May cause rashes</li>
+            <li>Can cause rashes if not changed often</li>
+            <li>More waste generation</li>
           </ul>
         </div>
 
         <div class="card product-card">
           <h2>Menstrual Cups</h2>
-          <p>Reusable silicone cup.</p>
+          <p>Reusable silicone cup placed inside the vagina.</p>
           <h3>Pros</h3>
           <ul class="simple-list">
-            <li>Eco-friendly</li>
-            <li>Long usage hours</li>
+            <li>Eco-friendly & cost-effective long-term</li>
+            <li>Can be worn for longer hours</li>
           </ul>
           <h3>Cons</h3>
           <ul class="simple-list">
-            <li>Needs practice</li>
-            <li>Requires sterilization</li>
+            <li>Needs practice to insert/remove</li>
+            <li>Requires boiling for sterilization</li>
           </ul>
         </div>
 
         <div class="card product-card">
           <h2>Tampons</h2>
-          <p>Absorbent material inserted inside.</p>
+          <p>Absorbent material inserted to absorb flow.</p>
           <h3>Pros</h3>
           <ul class="simple-list">
-            <li>Comfortable</li>
-            <li>Great for sports</li>
+            <li>Discrete, comfortable for many</li>
+            <li>Good for sports/swimming</li>
           </ul>
           <h3>Cons</h3>
           <ul class="simple-list">
-            <li>Needs frequent change</li>
+            <li>Must be changed regularly</li>
+            <li>Insertion may feel uncomfortable for some</li>
           </ul>
         </div>
 
         <div class="card product-card">
-          <h2>Period Underwear</h2>
-          <p>Washable & reusable.</p>
+          <h2>Period Underwear / Cloth Pads</h2>
+          <p>Washable, reusable options.</p>
           <h3>Pros</h3>
           <ul class="simple-list">
-            <li>Eco-friendly</li>
-            <li>Comfortable</li>
+            <li>Reusable, eco-friendly</li>
+            <li>Comfortable for daily wear</li>
+          </ul>
+          <h3>Cons</h3>
+          <ul class="simple-list">
+            <li>Needs proper washing & drying</li>
+            <li>May need multiple pairs</li>
           </ul>
         </div>
-
       </div>
     </section>
 
-
+    <!-- M Y T H S   &   F A C T S -->
     <section id="myths" class="section">
-
-      <h1 class="soft-type" data-text="Myths & Facts"></h1>
-      <p class="subtitle soft-type" data-text="Understand what’s true and what isn’t."></p>
+      <h1 id="mythTitle" class="soft-type">Myths & Facts</h1>
+      <p class="subtitle" id="mythSubtitle">
+        Understand what’s true and what isn’t.
+      </p>
 
       <div class="accordion">
-
         <div class="accordion-item">
-          <button class="accordion-header">Exercise is harmful during periods</button>
+          <button class="accordion-header">
+            You shouldn’t exercise during your period.
+          </button>
           <div class="accordion-body">
-            <p>Light exercise actually helps relieve cramps.</p>
+            <p>
+              Light to moderate exercise is usually safe and can actually help
+              reduce cramps and improve mood. Listen to your body and avoid
+              over-exertion.
+            </p>
           </div>
         </div>
 
         <div class="accordion-item">
-          <button class="accordion-header">Menstrual blood is dirty</button>
+          <button class="accordion-header">
+            Menstrual blood is “dirty” or impure.
+          </button>
           <div class="accordion-body">
-            <p>It is normal and not impure — it's just body tissue.</p>
+            <p>
+              Menstrual blood is simply a mix of blood and tissue from the
+              uterine lining. It is not dirty — it’s a normal body process.
+            </p>
           </div>
         </div>
 
         <div class="accordion-item">
-          <button class="accordion-header">Severe pain is normal</button>
+          <button class="accordion-header">
+            It’s normal for everyone to have very painful periods.
+          </button>
           <div class="accordion-body">
-            <p>Extreme pain should be checked by a specialist.</p>
+            <p>
+              Mild discomfort is common, but very severe pain that affects daily
+              life is not “just normal.” It can be a sign of conditions like
+              endometriosis and should be discussed with a doctor.
+            </p>
           </div>
         </div>
 
         <div class="accordion-item">
-          <button class="accordion-header">You can't get pregnant on your period</button>
+          <button class="accordion-header">
+            You can’t get pregnant during your period.
+          </button>
           <div class="accordion-body">
-            <p>It is less likely, but absolutely possible.</p>
+            <p>
+              Pregnancy is less likely but still possible, especially if cycles
+              are short or irregular. Sperm can survive in the body for several days.
+            </p>
           </div>
         </div>
-
       </div>
     </section>
 
-
+    <!-- F A Q -->
     <section id="faq" class="section">
-
-      <h1 class="soft-type" data-text="FAQs"></h1>
-      <p class="subtitle soft-type" data-text="General information only — consult a doctor for medical concerns."></p>
+      <h1 id="faqTitle" class="soft-type">FAQs</h1>
+      <p class="subtitle" id="faqSubtitle">
+        General information only — for medical issues, please consult a doctor or health professional.
+      </p>
 
       <div class="accordion">
-
         <div class="accordion-item">
-          <button class="accordion-header">My period is irregular. Should I worry?</button>
+          <button class="accordion-header">
+            My period is irregular. Should I worry?
+          </button>
           <div class="accordion-body">
-            <p>Some irregularity is normal, but long gaps need attention.</p>
+            <p>
+              Some irregularity is common, especially during teenage years and
+              times of stress. However, very irregular cycles or long gaps
+              should be discussed with a doctor to rule out hormonal or health issues.
+            </p>
           </div>
         </div>
 
         <div class="accordion-item">
           <button class="accordion-header">What is PMS?</button>
           <div class="accordion-body">
-            <p>A mix of emotional and physical symptoms before periods.</p>
+            <p>
+              PMS (Premenstrual Syndrome) refers to emotional and physical
+              symptoms (like mood swings, bloating, breast tenderness) that
+              happen in the days before a period and improve once it starts.
+            </p>
           </div>
         </div>
 
         <div class="accordion-item">
-          <button class="accordion-header">When should I see a doctor?</button>
+          <button class="accordion-header">
+            When should I see a doctor about my period?
+          </button>
           <div class="accordion-body">
-            <p>Heavy flow, extreme pain, or sudden changes need evaluation.</p>
+            <p>
+              Some reasons include: extremely painful periods, very heavy
+              bleeding, periods stopping suddenly (without pregnancy), or cycles
+              that are very irregular for many months.
+            </p>
           </div>
         </div>
 
         <div class="accordion-item">
-          <button class="accordion-header">Are period tracking apps accurate?</button>
+          <button class="accordion-header">
+            Are period tracking apps 100% accurate?
+          </button>
           <div class="accordion-body">
-            <p>They give estimates based on averages — your body may vary.</p>
+            <p>
+              No. Trackers give estimates based on your data. Bodies naturally
+              vary from cycle to cycle. Use trackers as a guide, not as exact
+              medical tools.
+            </p>
           </div>
         </div>
-
       </div>
     </section>
-
   </main>
 
-
+  <!-- S O S   M O D A L -->
   <div id="sosModal" class="modal">
     <div class="modal-content">
       <button class="modal-close" id="closeSos">&times;</button>
-
-      <h2 class="soft-type" data-text="SOS Emergency Help"></h2>
-      <p class="subtitle soft-type" data-text="In an emergency, contact trusted people and local helplines."></p>
+      <h2 id="sosTitle">SOS Emergency Help</h2>
+      <p class="subtitle" id="sosSubtitle">
+        In an emergency, contact trusted people and local helplines.
+      </p>
 
       <div class="grid">
-
         <div class="card">
           <h3>Quick Actions</h3>
           <ul class="simple-list">
-            <li>Call a trusted person</li>
-            <li>Go to a public/safe area</li>
-            <li>Use verified helplines</li>
+            <li>Call a trusted family member or friend.</li>
+            <li>If you feel unsafe, move to a public or safer place.</li>
+            <li>Use official helplines in your area.</li>
           </ul>
+
+          <div class="sos-actions">
+            <button id="fakeCallBtn" class="chip-btn">
+              Fake Call
+            </button>
+            <button id="quickExitBtn" class="chip-btn">
+              Quick Exit
+            </button>
+          </div>
         </div>
 
         <div class="card">
           <h3>Your Emergency Contacts</h3>
-
           <form id="sosForm" class="form">
             <div class="form-group">
-              <label for="contact1">Contact 1</label>
+              <label for="contact1">Contact 1 (name & phone)</label>
               <input type="text" id="contact1" placeholder="e.g. Mom - 9876543210" />
             </div>
-
             <div class="form-group">
               <label for="contact2">Contact 2</label>
               <input type="text" id="contact2" placeholder="e.g. Friend - 98765..." />
             </div>
-
             <div class="form-group">
               <label for="contact3">Contact 3</label>
               <input type="text" id="contact3" placeholder="e.g. Sister - 98765..." />
             </div>
-
             <button type="submit" class="primary-btn">Save Contacts</button>
           </form>
-
           <p id="sosSavedMsg" class="small"></p>
-
         </div>
-
       </div>
 
-      <p class="disclaimer">This does not replace emergency services.</p>
-
+      <p class="disclaimer">
+        This website does not replace emergency services. Please contact official
+        helplines and local authorities when needed.
+      </p>
     </div>
   </div>
 
-
+  <!-- C H A T   H E L P E R -->
   <div id="chatWidget" class="chat-widget">
-
     <button id="chatToggle" class="chat-toggle">Ask a Question 💬</button>
-
     <div id="chatBox" class="chat-box">
-
       <div class="chat-header">
-        <span class="soft-type" data-text="Your Buddy"></span>
+        <span id="chatTitle">Your Buddy</span>
         <button id="chatClose" class="chat-close">&times;</button>
       </div>
-
       <div id="chatMessages" class="chat-messages">
         <div class="chat-message bot">
           Hi! I can answer basic questions about periods & cycles.
+          For serious issues, please talk to a doctor. 💙
         </div>
       </div>
-
       <form id="chatForm" class="chat-input-row">
-        <input type="text" id="chatInput" placeholder="Type your question..." autocomplete="off" />
+        <input
+          type="text"
+          id="chatInput"
+          placeholder="Type your question..."
+          autocomplete="off"
+        />
         <button type="submit">Send</button>
       </form>
+    </div>
+  </div>
 
+  <!-- STEALTH OVERLAY (FAKE STUDY SCREEN) -->
+  <div id="stealthOverlay">
+    <div class="stealth-inner">
+      <h2>Study Dashboard</h2>
+      <p>Chapters to Revise:</p>
+      <ul>
+        <li>Mathematics – Important formulas</li>
+        <li>Computer Science – DSA recap</li>
+        <li>Operating Systems – Scheduling algorithms</li>
+      </ul>
+      <p class="small">Press Q again to go back.</p>
     </div>
   </div>
 
   <footer class="footer">
-    <p>HealthSphere — For awareness & education only.</p>
+    <p>HealthSphere — Designed for awareness & education, not for medical diagnosis.</p>
   </footer>
 
-
   <script src="script.js"></script>
-
 </body>
 </html>
