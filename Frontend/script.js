@@ -1,4 +1,4 @@
-// ---------- Helpers ----------
+
 function formatDate(date) {
   return date.toLocaleDateString(undefined, {
     day: "numeric",
@@ -21,7 +21,7 @@ function loadFromStorage(key, defaultValue = null) {
   }
 }
 
-// ---------- Navigation ----------
+
 const sections = document.querySelectorAll(".section");
 const navLinks = document.querySelectorAll(".nav-link");
 
@@ -38,7 +38,7 @@ navLinks.forEach((btn) => {
   });
 });
 
-// ---------- Tracker ----------
+
 const trackerForm = document.getElementById("trackerForm");
 const trackerResult = document.getElementById("trackerResult");
 const cycleSummary = document.getElementById("cycleSummary");
@@ -85,7 +85,7 @@ function updateTrackerUI() {
     )} – ${formatDate(fertileEnd)}</p>
   `;
 
-  // Fill inputs when user opens tracker again
+
   document.getElementById("lastPeriod").value = data.lastPeriod;
   document.getElementById("cycleLength").value = data.cycleLength;
 }
@@ -112,7 +112,6 @@ if (trackerForm) {
   });
 }
 
-// ---------- Symptoms & Mood ----------
 const logForm = document.getElementById("logForm");
 const logsList = document.getElementById("logsList");
 const recentLogs = document.getElementById("recentLogs");
@@ -177,7 +176,7 @@ if (logForm) {
   });
 }
 
-// ---------- SOS Modal ----------
+
 const sosBtn = document.getElementById("sosBtn");
 const sosModal = document.getElementById("sosModal");
 const closeSos = document.getElementById("closeSos");
@@ -220,7 +219,7 @@ if (sosForm) {
   });
 }
 
-// ---------- Accordion (Myths & FAQ) ----------
+
 const accordionHeaders = document.querySelectorAll(".accordion-header");
 
 accordionHeaders.forEach((header) => {
@@ -243,7 +242,7 @@ accordionHeaders.forEach((header) => {
   });
 });
 
-// ---------- Chat Helper (Simple Rule-Based) ----------
+
 const chatToggle = document.getElementById("chatToggle");
 const chatBox = document.getElementById("chatBox");
 const chatClose = document.getElementById("chatClose");
@@ -307,8 +306,19 @@ if (chatForm) {
   });
 }
 
-// ---------- Init ----------
+
 window.addEventListener("DOMContentLoaded", () => {
   updateTrackerUI();
   updateLogsUI();
+});
+
+document.querySelectorAll('.soft-type').forEach(el => {
+  const text = el.getAttribute('data-text');
+  el.innerHTML = "";
+  [...text].forEach((char, i) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+    span.style.animationDelay = `${i * 0.04}s`;
+    el.appendChild(span);
+  });
 });
