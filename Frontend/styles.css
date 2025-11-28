@@ -591,10 +591,9 @@ button,
 
 .soft-type span {
   opacity: 0;
-  display: inline-block;
+  display: inline;         /* inline instead of inline-block */
   animation: fadeLetter 0.05s forwards;
 }
-
 @keyframes fadeLetter {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -615,7 +614,7 @@ button,
 .section h1 {
   display: block;
   min-height: 2.8rem;      /* More height so subheading never overlaps */
-  margin-bottom: 0.8rem;   /* Space between heading and subtitle */
+  margin-bottom: 0.8rem;   
 }
 
 .section .subtitle {
@@ -623,4 +622,13 @@ button,
   min-height: 1.8rem;      /* Ensures subtitle doesn't collapse */
   margin-top: 0.4rem;      /* Extra space below heading */
   margin-bottom: 1.6rem;   /* Space below subtitle */
+}
+
+.subtitle {
+  word-spacing: 4px;   /* space between words */
+  letter-spacing: 0.5px;  /* optional: space between letters */
+  line-height: 1.6;    /* cleaner spacing between lines */
+}
+.soft-type {
+  white-space: pre-wrap;   /* KEEP SPACES */
 }
