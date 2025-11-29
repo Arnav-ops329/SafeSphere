@@ -1,4 +1,18 @@
-// ========== NAVIGATION ==========
+// 🔐 LOGIN PROTECTION (redirect if not logged in)
+if (localStorage.getItem("loggedIn") !== "true") {
+  window.location.href = "../login/auth.html";
+}
+
+// 🔓 Logout
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "../login/auth.html";
+  });
+}
+
+// ========= NAVIGATION =========
 const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll(".section");
 
@@ -13,25 +27,28 @@ navLinks.forEach((btn) => {
   });
 });
 
-// ========== THEME TOGGLE ==========
+// ========= THEME TOGGLE =========
 const themeToggle = document.getElementById("themeToggle");
 const savedTheme = localStorage.getItem("theme") || "light";
 document.body.dataset.theme = savedTheme;
-themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+if (themeToggle) {
+  themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+  themeToggle.addEventListener("click", () => {
+    const current = document.body.dataset.theme === "dark" ? "light" : "dark";
+    document.body.dataset.theme = current;
+    themeToggle.textContent = current === "dark" ? "☀️" : "🌙";
+    localStorage.setItem("theme", current);
+  });
+}
 
-themeToggle.addEventListener("click", () => {
-  const current = document.body.dataset.theme === "dark" ? "light" : "dark";
-  document.body.dataset.theme = current;
-  themeToggle.textContent = current === "dark" ? "☀️" : "🌙";
-  localStorage.setItem("theme", current);
-});
-
-// ========== LANGUAGE TOGGLE (EN / HI FULL) ==========
+// ========= LANGUAGE DATA =========
 let currentLang = localStorage.getItem("lang") || "en";
 const langToggle = document.getElementById("langToggle");
-langToggle.textContent = currentLang === "en" ? "EN" : "HI";
+if (langToggle) {
+  langToggle.textContent = currentLang === "en" ? "EN" : "HI";
+}
 
-// Helper for soft-type headings
+// helper animation
 function animateSoftType(el, text) {
   if (!el) return;
   el.innerHTML = "";
@@ -43,6 +60,7 @@ function animateSoftType(el, text) {
   });
 }
 
+// FULL TEXT OBJECT (EN + HI)
 const texts = {
   en: {
     navDashboard: "Dashboard",
@@ -149,7 +167,10 @@ const texts = {
     prod_under_title: "Period Underwear / Cloth Pads",
     prod_under_desc: "Washable, reusable options.",
     prod_under_pros: ["Reusable, eco-friendly", "Comfortable for daily wear"],
-    prod_under_cons: ["Needs proper washing & drying", "May need multiple pairs"],
+    prod_under_cons: [
+      "Needs proper washing & drying",
+      "May need multiple pairs",
+    ],
 
     myths: [
       {
@@ -203,8 +224,7 @@ const texts = {
     chat_intro:
       "Hi! I can answer basic questions about periods & cycles. For serious issues, please talk to a doctor. 💙",
 
-    insight_end:
-      "If any symptom worries you, please consult a doctor.",
+    insight_end: "If any symptom worries you, please consult a doctor.",
 
     print_btn: "Print / Save Report",
   },
@@ -383,6 +403,7 @@ const texts = {
   },
 };
 
+// ========= APPLY LANGUAGE =========
 function applyLanguage(lang) {
   const t = texts[lang];
 
@@ -423,22 +444,20 @@ function applyLanguage(lang) {
     t.tracker_cycle_len + " ";
   document.querySelector('label[for="flowIntensity"]').textContent =
     t.tracker_flow_label;
-  document.querySelector("#trackerForm .primary-btn").textContent =
-    t.tracker_btn;
+  const trackerBtn = document.querySelector("#trackerForm .primary-btn");
+  if (trackerBtn) trackerBtn.textContent = t.tracker_btn;
 
   // Symptoms labels
-  document.querySelector('label[for="logDate"]').textContent =
-    t.sym_date_label;
-  document.querySelectorAll("#symptoms .form-group label")[1].textContent =
-    t.sym_mood_label;
-  document.querySelectorAll("#symptoms .form-group label")[2].textContent =
-    t.sym_symptoms_label;
-  document.querySelector("#logForm .primary-btn").textContent =
-    t.sym_save_btn;
-  document.getElementById("symptomInsight").textContent =
-    t.sym_insight_default;
+  document.querySelector('label[for="logDate"]').textContent = t.sym_date_label;
+  const symLabels = document.querySelectorAll("#symptoms .form-group label");
+  if (symLabels[1]) symLabels[1].textContent = t.sym_mood_label;
+  if (symLabels[2]) symLabels[2].textContent = t.sym_symptoms_label;
+  const logBtn = document.querySelector("#logForm .primary-btn");
+  if (logBtn) logBtn.textContent = t.sym_save_btn;
+  const symInsight = document.getElementById("symptomInsight");
+  if (symInsight) symInsight.textContent = t.sym_insight_default;
 
-  // Tips section
+  // Tips section (4 cards)
   const tipsCards = document.querySelectorAll("#tips .card");
   if (tipsCards.length >= 4) {
     tipsCards[0].querySelector("h2").textContent = t.tips_before_h2;
@@ -466,7 +485,7 @@ function applyLanguage(lang) {
     });
   }
 
-  // Products
+  // Products (4 cards)
   const prodCards = document.querySelectorAll("#products .product-card");
   if (prodCards.length >= 4) {
     // Pads
@@ -505,7 +524,7 @@ function applyLanguage(lang) {
       if (cons[i]) cons[i].textContent = txt;
     });
 
-    // Period underwear
+    // Period underwear / cloth pads
     prodCards[3].querySelector("h2").textContent = t.prod_under_title;
     prodCards[3].querySelector("p").textContent = t.prod_under_desc;
     pros = prodCards[3].querySelectorAll("ul.simple-list")[0].children;
@@ -522,10 +541,8 @@ function applyLanguage(lang) {
   const mythItems = document.querySelectorAll("#myths .accordion-item");
   mythItems.forEach((item, index) => {
     if (t.myths[index]) {
-      item.querySelector(".accordion-header").textContent =
-        t.myths[index].q;
-      item.querySelector(".accordion-body p").textContent =
-        t.myths[index].a;
+      item.querySelector(".accordion-header").textContent = t.myths[index].q;
+      item.querySelector(".accordion-body p").textContent = t.myths[index].a;
     }
   });
 
@@ -533,16 +550,14 @@ function applyLanguage(lang) {
   const faqItems = document.querySelectorAll("#faq .accordion-item");
   faqItems.forEach((item, index) => {
     if (t.faqs[index]) {
-      item.querySelector(".accordion-header").textContent =
-        t.faqs[index].q;
-      item.querySelector(".accordion-body p").textContent =
-        t.faqs[index].a;
+      item.querySelector(".accordion-header").textContent = t.faqs[index].q;
+      item.querySelector(".accordion-body p").textContent = t.faqs[index].a;
     }
   });
 
-  // SOS quick actions & disclaimer
+  // SOS quick actions & disclaimer (inside SOS modal)
   const sosQuickLis = document.querySelectorAll(
-    "#sosModal .card:first-of-type .simple-list li"
+    "#sosModal .card .simple-list li"
   );
   t.sos_quick_list.forEach((txt, i) => {
     if (sosQuickLis[i]) sosQuickLis[i].textContent = txt;
@@ -550,10 +565,8 @@ function applyLanguage(lang) {
   const disc = document.querySelector("#sosModal .disclaimer");
   if (disc) disc.textContent = t.sos_disclaimer;
 
-  // Chat intro
-  const firstBotMsg = document.querySelector(
-    "#chatMessages .chat-message.bot"
-  );
+  // Chat intro (first bot message)
+  const firstBotMsg = document.querySelector("#chatMessages .chat-message.bot");
   if (firstBotMsg) firstBotMsg.textContent = t.chat_intro;
 
   // Print button
@@ -561,21 +574,24 @@ function applyLanguage(lang) {
   if (printBtn) printBtn.textContent = t.print_btn;
 }
 
+// initial language
 applyLanguage(currentLang);
 
-// language toggle
-langToggle.addEventListener("click", () => {
-  currentLang = currentLang === "en" ? "hi" : "en";
-  langToggle.textContent = currentLang === "en" ? "EN" : "HI";
-  localStorage.setItem("lang", currentLang);
-  applyLanguage(currentLang);
-  setDailyQuote();
-  updateDashboardFromCycle();
-  updateTodaySuggestion();
-  renderLogs();
-});
+// language toggle click
+if (langToggle) {
+  langToggle.addEventListener("click", () => {
+    currentLang = currentLang === "en" ? "hi" : "en";
+    langToggle.textContent = currentLang === "en" ? "EN" : "HI";
+    localStorage.setItem("lang", currentLang);
+    applyLanguage(currentLang);
+    setDailyQuote();
+    updateDashboardFromCycle();
+    updateTodaySuggestion();
+    renderLogs();
+  });
+}
 
-// ========== DAILY QUOTE ==========
+// ========= DAILY QUOTE =========
 const dailyQuotes = [
   "Drink water, breathe deeply, and be kind to yourself today.",
   "Rest is also productive. Your body is doing important work.",
@@ -600,13 +616,11 @@ function setDailyQuote() {
 }
 setDailyQuote();
 
-// ========== TRACKER + CALENDAR + DASHBOARD SUMMARY ==========
+// ========= TRACKER + DASHBOARD =========
 const trackerForm = document.getElementById("trackerForm");
 const trackerResult = document.getElementById("trackerResult");
 const cycleSummary = document.getElementById("cycleSummary");
 const cycleStatusText = document.getElementById("cycleStatusText");
-const calendarMonth = document.getElementById("calendarMonth");
-const calendarGrid = document.getElementById("calendarGrid");
 const todaySuggestionList = document.getElementById("todaySuggestion");
 
 let cycleData = null;
@@ -620,53 +634,6 @@ function getDatePlusDays(dateStr, days) {
   const d = new Date(dateStr);
   d.setDate(d.getDate() + days);
   return d;
-}
-
-function updateCalendar() {
-  if (!calendarMonth || !calendarGrid || !cycleData) return;
-
-  const monthValue = calendarMonth.value;
-  if (!monthValue) return;
-
-  const [year, month] = monthValue.split("-").map(Number);
-  calendarGrid.innerHTML = "";
-
-  const dayLabels = ["S", "M", "T", "W", "T", "F", "S"];
-  dayLabels.forEach((d) => {
-    const labelDiv = document.createElement("div");
-    labelDiv.textContent = d;
-    labelDiv.className = "day-label";
-    calendarGrid.appendChild(labelDiv);
-  });
-
-  const firstDay = new Date(year, month - 1, 1).getDay();
-  const daysInMonth = new Date(year, month, 0).getDate();
-
-  for (let i = 0; i < firstDay; i++) {
-    const empty = document.createElement("div");
-    empty.className = "day";
-    calendarGrid.appendChild(empty);
-  }
-
-  const nextPeriodDate = getDatePlusDays(
-    cycleData.lastPeriod,
-    cycleData.cycleLength
-  );
-  const npYear = nextPeriodDate.getFullYear();
-  const npMonth = nextPeriodDate.getMonth() + 1;
-  const npDay = nextPeriodDate.getDate();
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    const div = document.createElement("div");
-    div.className = "day";
-    div.textContent = day;
-
-    if (year === npYear && month === npMonth && day === npDay) {
-      div.classList.add("period-day");
-    }
-
-    calendarGrid.appendChild(div);
-  }
 }
 
 function updateDashboardFromCycle() {
@@ -795,29 +762,14 @@ function updateDashboardFromCycle() {
     cycleSummary.appendChild(extra);
   }
 
-  // Calendar default month
-  if (calendarMonth) {
-    const monthValue = `${nextPeriodDate.getFullYear()}-${String(
-      nextPeriodDate.getMonth() + 1
-    ).padStart(2, "0")}`;
-    calendarMonth.value = monthValue;
-    updateCalendar();
-  }
-
   updateTodaySuggestion();
-}
-
-if (calendarMonth) {
-  calendarMonth.addEventListener("change", updateCalendar);
 }
 
 if (trackerForm) {
   trackerForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const lastPeriod = document.getElementById("lastPeriod").value;
-    const cycleLength = Number(
-      document.getElementById("cycleLength").value
-    );
+    const cycleLength = Number(document.getElementById("cycleLength").value);
     const flowIntensity =
       document.getElementById("flowIntensity").value || "medium";
 
@@ -858,7 +810,7 @@ if (savedHistory) {
 
 updateDashboardFromCycle();
 
-// ========== TODAY'S SUGGESTION ==========
+// ========= TODAY'S SUGGESTION =========
 function updateTodaySuggestion() {
   if (!todaySuggestionList) return;
   todaySuggestionList.innerHTML = "";
@@ -962,12 +914,11 @@ function updateTodaySuggestion() {
 }
 updateTodaySuggestion();
 
-// ========== SYMPTOMS & MOOD LOGGING ==========
+// ========= SYMPTOMS & MOOD LOGGING =========
 const logForm = document.getElementById("logForm");
 const logsList = document.getElementById("logsList");
 const recentLogs = document.getElementById("recentLogs");
 const symptomInsight = document.getElementById("symptomInsight");
-
 let logs = [];
 
 function updateSymptomInsights() {
@@ -985,10 +936,8 @@ function updateSymptomInsights() {
     });
   });
 
-  const topMood =
-    Object.entries(moodCount).sort((a, b) => b[1] - a[1])[0];
-  const topSymptom =
-    Object.entries(symptomCount).sort((a, b) => b[1] - a[1])[0];
+  const topMood = Object.entries(moodCount).sort((a, b) => b[1] - a[1])[0];
+  const topSymptom = Object.entries(symptomCount).sort((a, b) => b[1] - a[1])[0];
 
   let text = "";
   if (currentLang === "hi") {
@@ -1085,7 +1034,7 @@ if (savedLogs) {
   renderLogs();
 }
 
-// ========== PRINT / SAVE REPORT ==========
+// ========= PRINT / SAVE REPORT =========
 const printReportBtn = document.getElementById("printReportBtn");
 if (printReportBtn) {
   printReportBtn.addEventListener("click", () => {
@@ -1093,7 +1042,7 @@ if (printReportBtn) {
   });
 }
 
-// ========== ACCORDION ==========
+// ========= ACCORDION =========
 document.querySelectorAll(".accordion-item").forEach((item) => {
   const header = item.querySelector(".accordion-header");
   const body = item.querySelector(".accordion-body");
@@ -1119,7 +1068,7 @@ document.querySelectorAll(".accordion-item").forEach((item) => {
   });
 });
 
-// ========== SOS MODAL, FAKE CALL, QUICK EXIT ==========
+// ========= SOS MODAL =========
 const sosBtn = document.getElementById("sosBtn");
 const sosModal = document.getElementById("sosModal");
 const closeSos = document.getElementById("closeSos");
@@ -1157,9 +1106,7 @@ if (sosForm) {
     localStorage.setItem("sosContacts", JSON.stringify(contacts));
     if (sosSavedMsg) {
       sosSavedMsg.textContent =
-        currentLang === "hi"
-          ? texts.hi.sos_saved
-          : texts.en.sos_saved;
+        currentLang === "hi" ? texts.hi.sos_saved : texts.en.sos_saved;
       setTimeout(() => {
         sosSavedMsg.textContent = "";
       }, 2500);
@@ -1178,9 +1125,7 @@ if (sosForm) {
 if (fakeCallBtn) {
   fakeCallBtn.addEventListener("click", () => {
     alert(
-      currentLang === "hi"
-        ? texts.hi.sos_fake_call
-        : texts.en.sos_fake_call
+      currentLang === "hi" ? texts.hi.sos_fake_call : texts.en.sos_fake_call
     );
   });
 }
@@ -1191,7 +1136,7 @@ if (quickExitBtn) {
   });
 }
 
-// ========== STEALTH MODE (Q KEY) ==========
+// ========= STEALTH MODE (Q) =========
 const stealthOverlay = document.getElementById("stealthOverlay");
 let stealthActive = false;
 
@@ -1210,7 +1155,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ========== CHATBOT (AI-POWERED) ==========
+// ========= CHATBOT =========
 const chatToggle = document.getElementById("chatToggle");
 const chatBox = document.getElementById("chatBox");
 const chatClose = document.getElementById("chatClose");
@@ -1282,11 +1227,186 @@ if (chatForm) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const loginBtn = document.getElementById("loginBtn");
-    if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-            window.location.href = "auth.html";  // your login + signup page
-        });
+// ---------------------------------------------
+// MINI CALENDAR TRACKER LOGIC (INSIDE DASHBOARD)
+// ---------------------------------------------
+function generateMiniCalendar(year, month, lastPeriodDate, cycleLength) {
+  const grid = document.getElementById("calendarGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+
+  // Days label
+  const labels = ["S", "M", "T", "W", "T", "F", "S"];
+  labels.forEach((l) => {
+    let div = document.createElement("div");
+    div.className = "day-label";
+    div.textContent = l;
+    grid.appendChild(div);
+  });
+
+  let firstDay = new Date(year, month, 1).getDay();
+  let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Calculate period days / fertile days / ovulation
+  let periodDays = [];
+  let fertileDays = [];
+  let ovulationDay = null;
+
+  if (lastPeriodDate && cycleLength) {
+    let lastDate = new Date(lastPeriodDate);
+    let currentPeriodStart = new Date(lastDate);
+
+    // move period window to the selected month
+    while (
+      currentPeriodStart.getMonth() < month ||
+      currentPeriodStart.getFullYear() < year
+    ) {
+      currentPeriodStart.setDate(currentPeriodStart.getDate() + cycleLength);
     }
-});
+    while (
+      (currentPeriodStart.getMonth() > month ||
+        currentPeriodStart.getFullYear() > year) &&
+      currentPeriodStart.getTime() -
+        cycleLength * 24 * 60 * 60 * 1000 >
+        new Date(year, month, 1).getTime()
+    ) {
+      currentPeriodStart.setDate(currentPeriodStart.getDate() - cycleLength);
+    }
+
+    // mark 5 days as period days
+    for (let i = 0; i < 5; i++) {
+      let d = new Date(currentPeriodStart);
+      d.setDate(d.getDate() + i);
+      if (d.getMonth() === month && d.getFullYear() === year) {
+        periodDays.push(d.getDate());
+      }
+    }
+
+    ovulationDay = new Date(currentPeriodStart);
+    ovulationDay.setDate(ovulationDay.getDate() + 14);
+
+    for (let i = -3; i <= 3; i++) {
+      let f = new Date(ovulationDay);
+      f.setDate(f.getDate() + i);
+      if (f.getMonth() === month && f.getFullYear() === year) {
+        fertileDays.push(f.getDate());
+      }
+    }
+
+    ovulationDay =
+      ovulationDay.getMonth() === month &&
+      ovulationDay.getFullYear() === year
+        ? ovulationDay.getDate()
+        : null;
+  }
+
+  // Blank boxes
+  for (let i = 0; i < firstDay; i++) {
+    let div = document.createElement("div");
+    div.className = "day";
+    div.textContent = "";
+    grid.appendChild(div);
+  }
+
+  // Actual days
+  for (let d = 1; d <= daysInMonth; d++) {
+    let div = document.createElement("div");
+    div.className = "day";
+    div.textContent = d;
+
+    if (periodDays.includes(d)) {
+      div.style.background = "#fecaca";
+      div.style.color = "#7f1d1d";
+      div.style.fontWeight = "700";
+    } else if (fertileDays.includes(d)) {
+      div.style.background = "#d1fae5";
+      div.style.color = "#065f46";
+    }
+
+    if (ovulationDay === d) {
+      div.style.border = "2px solid #facc15";
+    }
+
+    grid.appendChild(div);
+  }
+}
+
+// set default month to current month
+const calendarMonthInput = document.getElementById("calendarMonth");
+if (calendarMonthInput) {
+  const now = new Date();
+  const monthValue = `${now.getFullYear()}-${String(
+    now.getMonth() + 1
+  ).padStart(2, "0")}`;
+  calendarMonthInput.value = monthValue;
+
+  // try to prefill from main tracker if available
+  const calLast = document.getElementById("calLastPeriod");
+  const calLen = document.getElementById("calCycleLength");
+  if (cycleData && calLast && calLen) {
+    if (!calLast.value) calLast.value = cycleData.lastPeriod;
+    if (!calLen.value) calLen.value = cycleData.cycleLength;
+  }
+
+  generateMiniCalendar(
+    now.getFullYear(),
+    now.getMonth(),
+    calLast ? calLast.value : null,
+    calLen ? Number(calLen.value) : null
+  );
+
+  calendarMonthInput.addEventListener("change", () => {
+    const val = calendarMonthInput.value;
+    if (!val) return;
+    const [year, month] = val.split("-");
+    const lastPeriod = document.getElementById("calLastPeriod").value;
+    const cycleLen = parseInt(
+      document.getElementById("calCycleLength").value || "0",
+      10
+    );
+    generateMiniCalendar(
+      parseInt(year),
+      parseInt(month) - 1,
+      lastPeriod,
+      cycleLen
+    );
+  });
+}
+
+const updateCalendarBtn = document.getElementById("updateCalendarBtn");
+if (updateCalendarBtn) {
+  updateCalendarBtn.addEventListener("click", () => {
+    const val = calendarMonthInput ? calendarMonthInput.value : "";
+    if (!val) {
+      alert(
+        currentLang === "hi"
+          ? "पहले एक महीना चुनें!"
+          : "Select a month first!"
+      );
+      return;
+    }
+
+    const [year, month] = val.split("-");
+    const lastPeriod = document.getElementById("calLastPeriod").value;
+    const cycleLen = parseInt(
+      document.getElementById("calCycleLength").value || "0",
+      10
+    );
+
+    if (!lastPeriod || !cycleLen) {
+      alert(
+        currentLang === "hi"
+          ? "कृपया लास्ट पीरियड की तारीख और साइकिल लंबाई भरें।"
+          : "Please fill last period date and cycle length."
+      );
+      return;
+    }
+
+    generateMiniCalendar(
+      parseInt(year),
+      parseInt(month) - 1,
+      lastPeriod,
+      cycleLen
+    );
+  });
+}

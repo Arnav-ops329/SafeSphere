@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+  <!-- HEADER -->
   <header class="top-bar">
     <div class="logo">
       <span class="logo-dot"></span>
@@ -23,245 +25,367 @@
       <button class="nav-link" data-section="faq" id="navFaq">FAQ</button>
     </nav>
 
-    <!-- ⭐⭐⭐ ONLY CHANGE: LOGIN BUTTON ADDED HERE ⭐⭐⭐ -->
     <div class="top-right">
-  <button id="themeToggle" class="chip-btn" title="Toggle theme">🌙</button>
-  <button id="langToggle" class="chip-btn" title="Toggle language">EN</button>
-
-  <!-- CORRECTED LOGIN BUTTON -->
-  <button onclick="location.href='../login/auth.html'" class="chip-btn" title="Login or Sign Up">
-    Login
-  </button>
-
-  <button id="sosBtn" class="sos-btn">SOS</button>
-</div>
-    <!-- ⭐⭐⭐ END OF CHANGE ⭐⭐⭐ -->
+      <button id="logoutBtn" class="chip-btn">Logout</button>
+      <button id="themeToggle" class="chip-btn">🌙</button>
+      <button id="langToggle" class="chip-btn">EN</button>
+      <button id="sosBtn" class="sos-btn">SOS</button>
+    </div>
   </header>
 
+  <!-- MAIN CONTENT -->
   <main class="container">
-    <!-- D A S H B O A R D -->
+
+    <!-- ============= DASHBOARD ============= -->
     <section id="dashboard" class="section active">
       <h1 id="dashTitle" class="soft-type">Dashboard</h1>
-      <p class="subtitle" id="dashSubtitle">
+      <p id="dashSubtitle" class="subtitle">
         Quick overview of your cycle, health & recent activity.
       </p>
 
       <div class="dashboard-container">
 
-        <div class="dashboard-block">
-          <div class="dashboard-title"><span>🩷</span> Cycle Summary</div>
-          <div id="cycleSummary" class="dashboard-content">
-            <p>Add your cycle in Tracker to see summary here.</p>
-          </div>
-        </div>
-
-        <div class="dashboard-block">
-          <div class="dashboard-title"><span>💡</span> Today’s Suggestions</div>
-          <div class="dashboard-content">
-            <p id="dailyQuote" class="small"></p>
-            <ul id="todaySuggestion"></ul>
-          </div>
-        </div>
-
-        <div class="dashboard-block">
-          <div class="dashboard-title"><span>💬</span> Recent Mood & Symptoms</div>
-          <div class="dashboard-content">
-            <ul id="recentLogs"></ul>
-          </div>
-        </div>
-
+        <!-- 1: Cycle Summary -->
         <div class="dashboard-block dashboard-highlight">
-          <div class="dashboard-title"><span>📅</span> Cycle Status</div>
-          <div class="dashboard-content">
-            <p id="cycleStatusText">Your cycle status will appear here.</p>
+          <h2 class="dashboard-title"><span>📅</span> Cycle Summary</h2>
+          <div id="cycleSummary" class="dashboard-content"></div>
+        </div>
 
-            <!-- Mini calendar -->
-            <div class="mini-calendar">
-              <label for="calendarMonth" class="small">Cycle calendar preview</label>
-              <input type="month" id="calendarMonth" />
-              <div id="calendarGrid" class="calendar-grid"></div>
+        <!-- 2: Mini Calendar (with embedded tracker) -->
+        <div class="dashboard-block">
+          <h2 class="dashboard-title"><span>🗓</span> Mini Calendar</h2>
+          <div class="mini-calendar">
+            <input type="month" id="calendarMonth" />
+            <div id="calendarGrid" class="calendar-grid"></div>
+
+            <div class="form-group" style="margin-top: 10px;">
+              <label>Last Period Date</label>
+              <input type="date" id="calLastPeriod" />
             </div>
 
-            <button id="printReportBtn" class="primary-btn small-btn">
-              Print / Save Report
+            <div class="form-group">
+              <label>Cycle Length (days)</label>
+              <input type="number" id="calCycleLength" value="28" />
+            </div>
+
+            <button class="primary-btn small-btn" id="updateCalendarBtn">
+              Update Calendar
             </button>
           </div>
         </div>
 
+        <!-- 3: Today's Suggestions -->
+        <div class="dashboard-block">
+          <h2 class="dashboard-title"><span>💡</span> Today’s Suggestions</h2>
+          <ul id="todaySuggestion" class="simple-list"></ul>
+        </div>
+
+        <!-- 4: Daily Quote -->
+        <div class="dashboard-block">
+          <h2 class="dashboard-title"><span>💬</span> Daily Quote</h2>
+          <p id="dailyQuote" class="dashboard-content"></p>
+        </div>
+
       </div>
     </section>
 
-    <!-- CYCLE TRACKER -->
+    <!-- ============= CYCLE TRACKER ============= -->
     <section id="tracker" class="section">
       <h1 id="trackerTitle" class="soft-type">Cycle Tracker</h1>
-      <p class="subtitle" id="trackerSubtitle">
-        Track your cycle & symptoms easily.
-      </p>
+      <p id="trackerSubtitle" class="subtitle">Track your cycle & symptoms easily.</p>
 
-      <div class="card">
-        <form id="trackerForm" class="form">
-          <div class="form-group">
-            <label for="lastPeriod">Last period started on</label>
-            <input type="date" id="lastPeriod" required />
-          </div>
-
-          <div class="form-group">
-            <label for="cycleLength">
-              Average cycle length (in days)
-            </label>
-            <input
-              type="number"
-              id="cycleLength"
-              min="20"
-              max="45"
-              placeholder="e.g. 28"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="flowIntensity">Flow intensity</label>
-            <select id="flowIntensity">
-              <option value="light">Light</option>
-              <option value="medium" selected>Medium</option>
-              <option value="heavy">Heavy</option>
-            </select>
-          </div>
-
-          <button type="submit" class="primary-btn">Save & Calculate</button>
-        </form>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <h2>Predictions</h2>
-          <div id="trackerResult">
-            <p>Fill the form to see predictions.</p>
-          </div>
+      <form id="trackerForm" class="form">
+        <div class="form-group">
+          <label for="lastPeriod">Last period started on</label>
+          <input type="date" id="lastPeriod" />
         </div>
 
-        <div class="card">
-          <h2>Quick Info</h2>
-          <ul class="simple-list">
-            <li>Cycle length is counted from Day 1 of one period to the day before the next.</li>
-            <li>Ovulation often happens around 14 days before the next period (this can vary).</li>
-            <li>This tool is an estimate, not a medical diagnosis.</li>
-          </ul>
+        <div class="form-group">
+          <label for="cycleLength">Average cycle length (in days)</label>
+          <input type="number" id="cycleLength" />
         </div>
-      </div>
+
+        <div class="form-group">
+          <label for="flowIntensity">Flow intensity</label>
+          <select id="flowIntensity">
+            <option value="light">Light</option>
+            <option value="medium" selected>Medium</option>
+            <option value="heavy">Heavy</option>
+          </select>
+        </div>
+
+        <button class="primary-btn" type="submit">Save & Calculate</button>
+      </form>
+
+      <div id="trackerResult"></div>
+      <p id="cycleStatusText"></p>
+
+      <button id="printReportBtn" class="primary-btn small-btn" style="margin-top: 1rem;">
+        Print / Save Report
+      </button>
     </section>
 
-    <!-- S Y M P T O M S   &   M O O D -->
+    <!-- ============= SYMPTOMS & MOOD ============= -->
     <section id="symptoms" class="section">
       <h1 id="symTitle" class="soft-type">Symptoms & Mood</h1>
-      <p class="subtitle" id="symSubtitle">Log how you feel today.</p>
+      <p id="symSubtitle" class="subtitle">Log how you feel today.</p>
 
-      <div class="card">
-        <form id="logForm" class="form">
-          <div class="form-group">
-            <label for="logDate">Date</label>
-            <input type="date" id="logDate" />
-          </div>
-
-          <div class="form-group">
-            <label>Mood</label>
-            <div class="chip-group">
-              <label><input type="radio" name="mood" value="Happy" /> Happy 😊</label>
-              <label><input type="radio" name="mood" value="Neutral" /> Neutral 😐</label>
-              <label><input type="radio" name="mood" value="Sad" /> Sad 😔</label>
-              <label><input type="radio" name="mood" value="Stressed" /> Stressed 😣</label>
-              <label><input type="radio" name="mood" value="Tired" /> Tired 😴</label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Symptoms</label>
-            <div class="chip-group">
-              <label><input type="checkbox" value="Cramps" /> Cramps</label>
-              <label><input type="checkbox" value="Headache" /> Headache</label>
-              <label><input type="checkbox" value="Back pain" /> Back pain</label>
-              <label><input type="checkbox" value="Bloating" /> Bloating</label>
-              <label><input type="checkbox" value="Acne" /> Acne</label>
-              <label><input type="checkbox" value="Mood swings" /> Mood swings</label>
-            </div>
-          </div>
-
-          <button type="submit" class="primary-btn">Save Log</button>
-        </form>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <h2>Recent Logs</h2>
-          <ul id="logsList" class="simple-list"></ul>
+      <form id="logForm" class="form">
+        <div class="form-group">
+          <label for="logDate">Date</label>
+          <input type="date" id="logDate" />
         </div>
 
-        <div class="card">
-          <h2>Simple Insights</h2>
-          <p id="symptomInsight" class="small">
-            Log a few days of mood & symptoms to see patterns here.
-          </p>
+        <div class="form-group">
+          <label>Mood</label>
+          <div class="chip-group">
+            <label><input type="radio" name="mood" value="Happy" /> Happy</label>
+            <label><input type="radio" name="mood" value="Sad" /> Sad</label>
+            <label><input type="radio" name="mood" value="Tired" /> Tired</label>
+            <label><input type="radio" name="mood" value="Stressed" /> Stressed</label>
+          </div>
         </div>
-      </div>
+
+        <div class="form-group">
+          <label>Symptoms</label>
+          <div class="chip-group">
+            <label><input type="checkbox" value="Cramps" /> Cramps</label>
+            <label><input type="checkbox" value="Bloating" /> Bloating</label>
+            <label><input type="checkbox" value="Headache" /> Headache</label>
+            <label><input type="checkbox" value="Back Pain" /> Back Pain</label>
+          </div>
+        </div>
+
+        <button class="primary-btn" type="submit">Save Log</button>
+      </form>
+
+      <br />
+      <h3>Recent Logs</h3>
+      <ul id="recentLogs"></ul>
+
+      <h3>All Logs</h3>
+      <ul id="logsList"></ul>
+
+      <p id="symptomInsight" class="small"></p>
     </section>
 
-    <!-- TIPS, PRODUCTS, MYTHS, FAQ (UNCHANGED CONTENT) -->
-    <!-- I DID NOT TOUCH ANY OF THIS -->
-
-    <!-- TIPS & DIET -->
+    <!-- ============= TIPS & DIET (4 cards) ============= -->
     <section id="tips" class="section">
       <h1 id="tipsTitle" class="soft-type">Tips & Diet</h1>
-      <p class="subtitle" id="tipsSubtitle">
-        Personalized health guidance for your cycle.
-      </p>
+      <p id="tipsSubtitle" class="subtitle"></p>
 
       <div class="grid">
+        <!-- Before Period -->
         <div class="card">
-          <h2>Before Period (PMS phase)</h2>
+          <h2></h2>
           <ul class="simple-list">
-            <li>Eat more fruits, veggies, and whole grains.</li>
-            <li>Reduce very salty and junk food to avoid bloating.</li>
-            <li>Sleep 7–8 hours regularly.</li>
-            <li>Light exercise or walking can help mood.</li>
+            <li></li><li></li><li></li><li></li>
           </ul>
         </div>
 
+        <!-- During Period -->
         <div class="card">
-          <h2>During Period</h2>
+          <h2></h2>
           <ul class="simple-list">
-            <li>Use a heating pad or warm water bag for cramps.</li>
-            <li>Stay hydrated and avoid skipping meals.</li>
-            <li>Change pads/cups/ tampons regularly for hygiene.</li>
-            <li>Choose comfortable clothing.</li>
+            <li></li><li></li><li></li><li></li>
           </ul>
         </div>
 
+        <!-- After Period -->
         <div class="card">
-          <h2>After Period</h2>
+          <h2></h2>
           <ul class="simple-list">
-            <li>Iron-rich foods: spinach, lentils, beans.</li>
-            <li>Include protein: dals, paneer, eggs, etc.</li>
-            <li>Slowly return to regular exercise if you paused.</li>
+            <li></li><li></li><li></li>
           </ul>
         </div>
 
+        <!-- PCOS Tips -->
         <div class="card">
-          <h2>PCOS / PCOD Friendly Tips</h2>
+          <h2></h2>
           <ul class="simple-list">
-            <li>Regular movement (even 20–30 mins daily walk).</li>
-            <li>Limit very sugary and processed foods.</li>
-            <li>Keep a routine sleep schedule.</li>
-            <li>Consult a doctor for personalized advice.</li>
+            <li></li><li></li><li></li><li></li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- PRODUCTS, MYTHS, FAQ — UNCHANGED -->
+    <!-- ============= PRODUCTS (4 cards) ============= -->
+    <section id="products" class="section">
+      <h1 id="prodTitle" class="soft-type">Products</h1>
+      <p id="prodSubtitle" class="subtitle"></p>
+
+      <div class="grid product-grid">
+        <!-- Pads -->
+        <div class="product-card card">
+          <h2></h2>
+          <p></p>
+          <ul class="simple-list">
+            <li></li><li></li><li></li>
+          </ul>
+          <ul class="simple-list">
+            <li></li><li></li><li></li>
+          </ul>
+        </div>
+
+        <!-- Cups -->
+        <div class="product-card card">
+          <h2></h2>
+          <p></p>
+          <ul class="simple-list">
+            <li></li><li></li>
+          </ul>
+          <ul class="simple-list">
+            <li></li><li></li>
+          </ul>
+        </div>
+
+        <!-- Tampons -->
+        <div class="product-card card">
+          <h2></h2>
+          <p></p>
+          <ul class="simple-list">
+            <li></li><li></li>
+          </ul>
+          <ul class="simple-list">
+            <li></li><li></li>
+          </ul>
+        </div>
+
+        <!-- Period Underwear / Cloth Pads -->
+        <div class="product-card card">
+          <h2></h2>
+          <p></p>
+          <ul class="simple-list">
+            <li></li><li></li>
+          </ul>
+          <ul class="simple-list">
+            <li></li><li></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= MYTHS (4 items) ============= -->
+    <section id="myths" class="section">
+      <h1 id="mythTitle" class="soft-type">Myths & Facts</h1>
+      <p id="mythSubtitle" class="subtitle"></p>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= FAQ (4 items) ============= -->
+    <section id="faq" class="section">
+      <h1 id="faqTitle" class="soft-type">FAQ</h1>
+      <p id="faqSubtitle" class="subtitle"></p>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-header"></button>
+          <div class="accordion-body"><p></p></div>
+        </div>
+      </div>
+    </section>
 
   </main>
 
-  <!-- CHAT, SOS, FOOTER, OVERLAY — UNCHANGED -->
-  <script src="script.js"></script>
+</main>
+
+<!-- ============= SOS MODAL (ONLY ONE, CLEAN & HIDDEN) ============= -->
+<div id="sosModal" class="modal">
+  <div class="modal-content">
+    <button id="closeSos" class="modal-close">×</button>
+
+    <h2 id="sosTitle">SOS Emergency Help</h2>
+    <p id="sosSubtitle" class="subtitle"></p>
+
+    <!-- Quick Tips -->
+    <div class="card">
+      <ul class="simple-list">
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <!-- Emergency Contacts Form -->
+    <form id="sosForm" class="form">
+      <input type="text" id="contact1" placeholder="Emergency Contact 1" />
+      <input type="text" id="contact2" placeholder="Emergency Contact 2" />
+      <input type="text" id="contact3" placeholder="Emergency Contact 3" />
+      <button class="primary-btn" type="submit">Save</button>
+    </form>
+
+    <p class="disclaimer"></p>
+    <p id="sosSavedMsg" class="small"></p>
+
+    <!-- SOS Action Buttons -->
+    <div class="sos-actions">
+      <button id="fakeCallBtn" class="primary-btn small-btn">Fake Call</button>
+      <button id="quickExitBtn" class="primary-btn small-btn">Quick Exit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============= ONE SINGLE STEALTH OVERLAY ============= -->
+<div id="stealthOverlay">
+  <div class="stealth-inner">
+    <h2>Private Mode Activated</h2>
+    <ul>
+      <li>Press Q again to exit.</li>
+      <li>Your screen is now hidden.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============= CHAT WIDGET ============= -->
+<div class="chat-widget">
+  <button id="chatToggle" class="chat-toggle">Ask a Question</button>
+  <div id="chatBox" class="chat-box">
+    <div class="chat-header">
+      <span id="chatTitle">Your Buddy</span>
+      <button id="chatClose" class="chat-close">×</button>
+    </div>
+    <div id="chatMessages" class="chat-messages">
+      <div class="chat-message bot">
+        Hi! I can answer basic questions about periods & cycles.
+      </div>
+    </div>
+    <form id="chatForm" class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Type your message..." />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
