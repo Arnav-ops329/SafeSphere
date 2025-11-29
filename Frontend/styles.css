@@ -907,3 +907,18 @@ body[data-theme="dark"] .footer {
   box-shadow: 0 0 15px rgba(80, 150, 255, 0.7);
   transform: translateY(-1px);
 }
+
+.login-btn {
+    background: #1b4dcc;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.login-btn:hover {
+    background: #003cbe;
+}

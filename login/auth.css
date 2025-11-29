@@ -1,0 +1,117 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #dfe8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #fff;
+    width: 850px;
+    max-width: 100%;
+    min-height: 450px;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+}
+
+.form-container {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: 50%;
+    transition: all 0.6s ease-in-out;
+    padding: 40px;
+}
+
+.sign-in-container {
+    left: 0;
+    z-index: 2;
+}
+
+.sign-up-container {
+    left: 0;
+    opacity: 0;
+    z-index: 1;
+}
+
+input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid #b9c4ff;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px;
+    width: 100%;
+    background: #1b4dcc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #003cbe;
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.overlay {
+    background: #1b4dcc;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+}
+
+.ghost {
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.container.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+}
+
+.container.right-panel-active .sign-up-container {
+    opacity: 1;
+    transform: translateX(100%);
+    z-index: 5;
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+p {
+    margin-top: 10px;
+    color: red;
+    font-size: 14px;
+}

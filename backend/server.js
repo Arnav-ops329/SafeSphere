@@ -64,3 +64,16 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("Backend listening on port", PORT);
 });
+
+app.post("/api/signup", (req, res) => {
+  const { username, email, password } = req.body;
+
+  const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+
+  db.query(sql, [username, email, password], (err, result) => {
+    if (err) {
+      return res.json({ success: false, message: "User already exists" });
+    }
+    return res.json({ success: true, message: "Signup successful!" });
+  });
+});

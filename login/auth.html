@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+<div class="container" id="container">
+
+    <!-- SIGN UP -->
+    <div class="form-container sign-up-container">
+        <form action="#">
+            <h2>Create Account</h2>
+
+            <input type="text" id="signupName" placeholder="Name" />
+            <input type="email" id="signupEmail" placeholder="Email" />
+            <input type="password" id="signupPass" placeholder="Password" />
+
+            <button type="button" onclick="signupUser()">Sign Up</button>
+            <p id="signupMsg"></p>
+        </form>
+    </div>
+
+    <!-- SIGN IN -->
+    <div class="form-container sign-in-container">
+        <form action="#">
+            <h2>Login</h2>
+
+            <input type="email" id="loginEmail" placeholder="Email" />
+            <input type="password" id="loginPass" placeholder="Password" />
+
+            <button type="button" onclick="loginUser()">Login</button>
+            <p id="loginMsg"></p>
+        </form>
+    </div>
+
+    <!-- SLIDE PANELS -->
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h2>Welcome Back!</h2>
+                <p>To login, click below 👇</p>
+                <button class="ghost" id="signIn">Login</button>
+            </div>
+
+            <div class="overlay-panel overlay-right">
+                <h2>Hello!</h2>
+                <p>Create your account to continue</p>
+                <button class="ghost" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="auth.js"></script>
+
+</body>
+</html>
